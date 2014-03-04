@@ -6,8 +6,8 @@
 //  Copyright (c) 2013年 Mengdi Wang. All rights reserved.
 //
 
-#ifndef __ROBDD__list__
-#define __ROBDD__list__
+#ifndef __ROBDD_list_h
+#define __ROBDD_list_h
 
 #include <stdlib.h>
 #include "caution.h"
@@ -27,7 +27,6 @@ public:
     {
 //        printf("Node called\n");
     }
-     
     
     key *k;
     element *e;
@@ -46,39 +45,30 @@ public:
     
     ~Tlist()
     {
-        Clear();
-//        printf("List called\n");
+        //Clear();
+        //        printf("List called\n");
     }
     
+	/*
     void Clear()
     {
-//TODO
-//        Tlnode<key, element> *q;
-//        while (head != NULL)
-//        {
-//            if (head->k != NULL)
-//            {
-//                delete head->k;
-//                head->k = NULL;
-//            }
-//            if (head->e != NULL)
-//            {
-//                delete head->e;
-//                head->e = NULL;
-//            }
-//            q = head->next;
-//            delete head;
-//            head = q;
-//        }
+        //TODO
+        Tlnode<key, element> *q;
+        while (head != NULL)
+        {
+            q = head->next;
+            delete head;
+			head = q;
+        }
     }
-    
+    */
+	
     element* search(key *k);
     element* insert(key *k, element *e);
     bool IsValid(int h, int m, int (*hash) (key *k, int m));
 
 private:
     Tlnode<key, element> *find(key *k);
-               
     bool (*equal) (key *k1, key *k2);
     Tlnode<key, element> *head;
 };
@@ -116,12 +106,12 @@ element* Tlist<key, element>::insert(key *k, element *e)
 }
 
 template<typename key, typename element>
-Tlnode<key, element>* Tlist<key, element>::find(key *k)
+Tlnode<key, element>* Tlist<key, element>::find(key *k)// LINUX FALUT
 {
     Tlnode<key, element> *p = head;
     while(p != NULL)
     {
-        if((p->k != NULL) && (equal)(k, p->k))
+        if(k!=NULL && (p->k != NULL) && (equal)(k, p->k))
             return p;
         p = p->next;
     }

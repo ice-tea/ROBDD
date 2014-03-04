@@ -6,8 +6,8 @@
 //  Copyright (c) 2013年 Mengdi Wang. All rights reserved.
 //
 
-#ifndef __ROBDD__htable__
-#define __ROBDD__htable__
+#ifndef __ROBDD_htable_h
+#define __ROBDD_htable_h
 
 #include "bddlist.h"
 #include <stdlib.h>
@@ -23,13 +23,6 @@ public:
     
     ~Thtable()
     {
-        clear();
-    }
-
-    bool IsValid();
-    
-    void clear()
-    {
         for(int i=0; i<size; i++)
         {
             if(array[i] != NULL)
@@ -40,7 +33,24 @@ public:
         }
         delete[] array;
         array = NULL;
-//        printf("Called\n");
+    }
+
+    bool IsValid();
+    
+    void clear()
+    {
+        memset(array, 0, sizeof(Tlist<key, element>*) *size);
+//        for(int i=0; i<size; i++)
+//        {
+//            if(array[i] != NULL)
+//            {
+//                delete array[i];
+//                array[i] = NULL;
+//            }
+//        }
+//        delete[] array;
+//        array = NULL;
+
     }
     
     
@@ -66,8 +76,8 @@ Thtable<key, element>::Thtable(int asize,
     hash    = ahash;
     num_ele = 0;
     array   = new Tlist<key, element>* [asize];
-    
-#ifdef DEBUG
+    memset(array, 0, sizeof(Tlist<key, element>*) *size);
+#ifdef DD
     if(!IsValid())
         assert(0);
 #endif
@@ -91,8 +101,8 @@ template <typename key, typename element>
 element* Thtable<key, element>::insert(key *k, element *e)
 {
     REQUIRES(IsValid());
-    if(!IsValid())
-        return NULL;
+    //if(!IsValid())
+    //    return NULL;
     
     element *olde;
     int h = (hash)(k, size);
@@ -111,8 +121,8 @@ template <typename key, typename element>
 element *Thtable<key, element>::search(key *k)
 {
     REQUIRES(IsValid());
-    if(!IsValid())
-        return NULL;
+    //if(!IsValid())
+    //    return NULL;
     int h = (hash)(k, size);
     if(array[h] == NULL)
         return NULL;
